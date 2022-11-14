@@ -1,6 +1,6 @@
 import request from 'supertest';
 import Koa from 'koa';
-import exampleApi from './example-api';
+import exampleApi from './api';
 import bodyParser from 'koa-bodyparser';
 
 const app = new Koa();

@@ -3,7 +3,7 @@ import bodyParser from 'koa-bodyparser';
 import pinoLogger from 'koa-pino-logger';
 import cors from '@koa/cors';
 
-import exampleApi from './example-api';
+import exampleApi from './api';
 import errorHandler from './middlewares/error-handler';
 
 const app = new Koa();
