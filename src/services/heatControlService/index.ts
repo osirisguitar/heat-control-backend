@@ -22,7 +22,6 @@ const getHeatControlStatus = async () : Promise<string> => {
 }
 
 const getHeatControlSchedule = async (scheduleId : any) : Promise<string> => {
-  console.log('scheduleId', scheduleId)
   const path = scheduleId ? `/schedule/lower-temperature/${scheduleId}` : '/schedule/lower-temperature'
 
   const options = {
@@ -44,7 +43,16 @@ const createHeatControlSchedule = async (schedule: any) : Promise<void> => {
     data: schedule,
   }
 
-  console.log(options)
+  await axios(options)
+}
+
+const updateHeatControlSchedule = async (scheduleId: Number, schedule: any) : Promise<void> => {
+  const options = {
+    method: 'post',
+    url: `${heatControlUrl}/schedule/lower-temperature/${scheduleId}`,
+    headers: baseHeaders,
+    data: schedule,
+  }
 
   await axios(options)
 }
@@ -56,15 +64,21 @@ export const routes = (router: KoaRouter) => {
     ctx.body = result
   })
 
-  router.get('/heatcontrol/:date*', async (ctx) => {
-    const result = await getHeatControlStatus()
+  router.post('/heatcontrol/schedule/:scheduleId', async (ctx) => {
+    await updateHeatControlSchedule(Number(ctx.params.scheduleId), ctx.request.body)
 
-    ctx.body = result
+    ctx.status = 204
   })
 
   router.post('/heatcontrol/schedule', async (ctx) => {
     await createHeatControlSchedule(ctx.request.body)
 
     ctx.status = 204
+  })
+
+  router.get('/heatcontrol/:date*', async (ctx) => {
+    const result = await getHeatControlStatus()
+
+    ctx.body = result
   })
 }
